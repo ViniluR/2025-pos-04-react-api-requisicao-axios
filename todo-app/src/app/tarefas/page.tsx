@@ -3,7 +3,7 @@
 import type React from "react";
 import axios from 'axios';
 import { useEffect, useState } from "react";
-import dados, { TarefaInterface } from "@/data";
+import { TarefaInterface } from "@/data";
 import Cabecalho from "@/componentes/Cabecalho.tsx";
 import ModalTarefa from "@/componentes/ModalTarefa.tsx";
 
@@ -59,8 +59,24 @@ const Tarefas: React.FC<TareafasProps> = ({ dados }) => {
 
 
 const Home = () => {
-	const [tarefas, setTarefas] = useState<TarefaInterface[]>(dados);
+	const [tarefas, setTarefas] = useState<TarefaInterface[]>([]);
 	const [mostrarModal, setMostrarModal] = useState(false);
+
+	useEffect(() => {
+	axios.get("https://dummyjson.com/todos")
+		.then(res => {
+			const tarefasDaAPI = res.data.todos.map((tarefa: any) => ({
+				id: tarefa.id,
+				title: tarefa.todo,
+				completed: tarefa.completed,
+			}));
+			setTarefas(tarefasDaAPI);
+		})
+		.catch(err => {
+			console.error("Erro ao buscar tarefas:", err);
+		});
+}, []);
+
 	const adicionarTarefa = (titulo: string) => {
 		const novaTarefa: TarefaInterface = {
 			id: tarefas.length + 1,
