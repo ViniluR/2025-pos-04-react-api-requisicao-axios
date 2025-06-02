@@ -44,8 +44,8 @@ interface TareafasProps {
 
 const Tarefas: React.FC<TareafasProps> = ({ dados }) => {
 	return (
-		<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-			{dados.map((tarefa) => (
+		<div className="grid reverse grid-cols-1 md:grid-cols-2 gap-8">
+			{[...dados].reverse().map((tarefa) => (
 				<Tarefa
 					key={tarefa.id}
 					titulo={tarefa.title}
